@@ -15,6 +15,10 @@ A lightweight terminal tool to help new hires memorize server acronyms through i
 - 🔍 **Full type hints** - Complete Python type annotations for better code clarity
 - ✨ **Comprehensive testing** - 96% test coverage with pytest
 
+## AI Edit Logs
+
+This project was fully made by Copilot. The prompts I provided, review processes, and AI responses are available at `docs/ai_edit_logs.md`.
+
 ## Installation
 
 ### From Source

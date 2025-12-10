@@ -5,6 +5,8 @@ Review process:
 - The jumpstart script does not include all the requirements in detail.
 - This is an attempt at describing the requirements in detail.
 
+AI response: https://github.com/jaycode/flashcard-quizzer/pull/1
+
 ```
 
 Do a full-review of your code, and make sure it follows the following specficiations
@@ -51,6 +53,8 @@ Review process:
 - pytest is working perfectly.
 - Although the code is working, `main.py` is not currently used as the interface.
 - The texts have no color.
+
+AI response: https://github.com/jaycode/flashcard-quizzer/pull/2
 
 ```
 
@@ -139,6 +143,8 @@ Review Process:
 - Running `python main.py --mode sequential --file data/glossary.json` gave me a file not found error.
 - pytest still works perfectly.
 
+AI response: https://github.com/jaycode/flashcard-quizzer/pull/3
+
 ```
 
 Install and run the following quality assurance tools:
@@ -164,6 +170,8 @@ Follow-up #4
 Review process:
 - Run `python main.py --mode sequential --file data/glossary.json`
 - I noticed some questions don't make sense, e.g. "What does 'Algorithm' stand for?". Algorithm is not an abbreviation so it does not stand for anything.
+
+AI response: https://github.com/jaycode/flashcard-quizzer/pull/4
 
 ```
 
