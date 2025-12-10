@@ -1,0 +1,64 @@
+{
+  "flashcards": [
+    {
+      "term": "DNS",
+      "definition": "Domain Name System"
+    },
+    {
+      "term": "HTTP",
+      "definition": "Hypertext Transfer Protocol"
+    },
+    {
+      "term": "HTTPS",
+      "definition": "Hypertext Transfer Protocol Secure"
+    },
+    {
+      "term": "SSH",
+      "definition": "Secure Shell"
+    },
+    {
+      "term": "FTP",
+      "definition": "File Transfer Protocol"
+    },
+    {
+      "term": "SMTP",
+      "definition": "Simple Mail Transfer Protocol"
+    },
+    {
+      "term": "API",
+      "definition": "Application Programming Interface"
+    },
+    {
+      "term": "REST",
+      "definition": "Representational State Transfer"
+    },
+    {
+      "term": "TCP",
+      "definition": "Transmission Control Protocol"
+    },
+    {
+      "term": "UDP",
+      "definition": "User Datagram Protocol"
+    },
+    {
+      "term": "IP",
+      "definition": "Internet Protocol"
+    },
+    {
+      "term": "VPN",
+      "definition": "Virtual Private Network"
+    },
+    {
+      "term": "CDN",
+      "definition": "Content Delivery Network"
+    },
+    {
+      "term": "SQL",
+      "definition": "Structured Query Language"
+    },
+    {
+      "term": "CORS",
+      "definition": "Cross-Origin Resource Sharing"
+    }
+  ]
+}
