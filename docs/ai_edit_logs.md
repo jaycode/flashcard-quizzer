@@ -156,3 +156,15 @@ python main.py --help
 # The Quiz Loop (Standard operation)
 python main.py --mode sequential --file data/glossary.json
 ```
+
+
+```
+Follow-up #4
+
+Review process:
+- Run `python main.py --mode sequential --file data/glossary.json`
+- I noticed some questions don't make sense, e.g. "What does 'Algorithm' stand for?". Algorithm is not an abbreviation so it does not stand for anything.
+
+```
+
+Update the questions so they made literative sense. For example "What does 'Algorithm' stand for?". Algorithm is not an abbreviation so it does not stand for anything.
