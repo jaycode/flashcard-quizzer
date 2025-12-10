@@ -17,7 +17,9 @@ A lightweight terminal tool to help new hires memorize server acronyms through i
 
 ## AI Edit Logs
 
-This project was fully made by Copilot. The prompts I provided, review processes, and AI responses are available at `docs/ai_edit_logs.md`.
+1. This project was fully made by Copilot. The prompts I provided, review processes, and AI responses are available at `prompts.md` for the initial (jumpstart) prompt, and `docs/ai_edit_logs.md` for the subsequent prompts.
+2. I use Claude via GitHub Copilot, which is a better alternative for a project of this nature anyway (letting AI to create the project from scratch rather than as an assistant to help you write code).
+3. I generated the `final_project_report.md` file using ChatGPT via Copilot, so it uses all my project files as context.
 
 ## Installation
 
