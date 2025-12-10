@@ -1,6 +1,11 @@
----
+```
 Follow-up #1
----
+
+Review process:
+- The jumpstart script does not include all the requirements in detail.
+- This is an attempt at describing the requirements in detail.
+
+```
 
 Do a full-review of your code, and make sure it follows the following specficiations
 
@@ -39,9 +44,15 @@ You must produce an application that meets the following criteria.
     - The project must include a test suite (using pytest).
     - You need at least 80% code coverage.
 
----
+```
 Follow-up #2
----
+
+Review process:
+- pytest is working perfectly.
+- Although the code is working, `main.py` is not currently used as the interface.
+- The texts have no color.
+
+```
 
 Update the project to meet the following requirements.
 
@@ -118,3 +129,30 @@ Your project is complete when:
 1. You can run `python main.py -m adaptive -f data/python_basics.json` and play a full game.
 2. The code uses the **Strategy** and **Factory** patterns (checked by inspecting `quiz_engine.py`).
 3. All tests pass, and `flake8` reports no linting errors.
+
+
+```
+Follow-up #3
+
+Review Process:
+- I noticed the code does not have the black and mypy modules installed.
+- Running `python main.py --mode sequential --file data/glossary.json` gave me a file not found error.
+- pytest still works perfectly.
+
+```
+
+Install and run the following quality assurance tools:
+
+- pytest: For running the test suite.
+- black: For enforcing code formatting.
+- mypy: For static type checking.
+
+I should be able to execute the following commands without errors:
+
+```
+# The Help Command (Must display all available flags)
+python main.py --help
+
+# The Quiz Loop (Standard operation)
+python main.py --mode sequential --file data/glossary.json
+```
