@@ -196,6 +196,91 @@ class TestInteractiveQuiz:
         quiz = InteractiveQuiz(engine, mock_input, mock_output)
         assert quiz.engine == engine
 
+    def test_is_acronym(self, sample_flashcards):
+        """Test that _is_acronym correctly identifies acronyms vs regular terms."""
+        strategy = SequentialStrategy()
+        engine = QuizEngine(sample_flashcards, strategy)
+        quiz = InteractiveQuiz(engine)
+
+        # Acronyms should return True
+        assert quiz._is_acronym("DNS") is True
+        assert quiz._is_acronym("HTTP") is True
+        assert quiz._is_acronym("HTTPS") is True
+        assert quiz._is_acronym("SSH") is True
+        assert quiz._is_acronym("API") is True
+        assert quiz._is_acronym("REST") is True
+        assert quiz._is_acronym("TCP") is True
+
+        # Regular terms should return False
+        assert quiz._is_acronym("Algorithm") is False
+        assert quiz._is_acronym("Variable") is False
+        assert quiz._is_acronym("Function") is False
+        assert quiz._is_acronym("Loop") is False
+        assert quiz._is_acronym("Array") is False
+        assert quiz._is_acronym("list") is False
+        assert quiz._is_acronym("tuple") is False
+        assert quiz._is_acronym("dict") is False
+        assert quiz._is_acronym("lambda") is False
+
+        # Edge cases
+        assert quiz._is_acronym("A") is False  # Too short
+        assert quiz._is_acronym("AB") is True  # Minimum length
+        assert quiz._is_acronym("SQL") is True
+        assert quiz._is_acronym("NoSQL") is False  # Mixed case
+
+    def test_question_format_for_acronyms(self, sample_flashcards):
+        """Test that acronyms use 'stand for' question format."""
+        strategy = SequentialStrategy()
+        engine = QuizEngine(sample_flashcards, strategy)
+
+        inputs = [card.definition for card in sample_flashcards]
+        outputs = []
+
+        def mock_input(prompt):
+            return inputs.pop(0)
+
+        def mock_output(text):
+            outputs.append(text)
+
+        quiz = InteractiveQuiz(engine, mock_input, mock_output)
+        quiz.run()
+
+        output_text = " ".join(outputs)
+        # All sample flashcards are acronyms, so should use "stand for"
+        assert "What does 'DNS' stand for?" in output_text
+        assert "What does 'HTTP' stand for?" in output_text
+        assert "What does 'SSH' stand for?" in output_text
+
+    def test_question_format_for_regular_terms(self):
+        """Test that non-acronyms use 'What is' question format."""
+        # Create flashcards with regular terms
+        regular_flashcards = [
+            Flashcard(term="Algorithm", definition="A step-by-step procedure"),
+            Flashcard(term="Variable", definition="A named storage location"),
+        ]
+
+        strategy = SequentialStrategy()
+        engine = QuizEngine(regular_flashcards, strategy)
+
+        inputs = ["A step-by-step procedure", "A named storage location"]
+        outputs = []
+
+        def mock_input(prompt):
+            return inputs.pop(0)
+
+        def mock_output(text):
+            outputs.append(text)
+
+        quiz = InteractiveQuiz(engine, mock_input, mock_output)
+        quiz.run()
+
+        output_text = " ".join(outputs)
+        # Regular terms should use "What is"
+        assert "What is 'Algorithm'?" in output_text
+        assert "What is 'Variable'?" in output_text
+        # Should NOT use "stand for"
+        assert "stand for" not in output_text
+
     def test_run_all_correct(self, sample_flashcards):
         """Test running quiz with all correct answers."""
         strategy = SequentialStrategy()
