@@ -1,17 +1,17 @@
 """Data models for flashcard quizzer."""
 
-from dataclasses import dataclass
-from typing import List, Any
+from dataclasses import dataclass, field
+from typing import List, Any, Optional
 import json
 
 
 @dataclass
 class Flashcard:
     """Represents a single flashcard with a term and definition."""
-    
+
     term: str
     definition: str
-    
+
     def __post_init__(self) -> None:
         """Validate flashcard data."""
         if not self.term or not isinstance(self.term, str):
@@ -23,37 +23,32 @@ class Flashcard:
 @dataclass
 class QuizResult:
     """Represents the result of a single quiz question."""
-    
+
     flashcard: Flashcard
     user_answer: str
     is_correct: bool
-    
-    
+
+
 @dataclass
 class SessionStats:
     """Tracks statistics for a quiz session."""
-    
+
     total_questions: int = 0
     correct_answers: int = 0
     incorrect_answers: int = 0
-    missed_terms: List[str] = None
-    
-    def __post_init__(self) -> None:
-        """Initialize mutable default."""
-        if self.missed_terms is None:
-            self.missed_terms = []
-    
+    missed_terms: List[str] = field(default_factory=list)
+
     @property
     def accuracy(self) -> float:
         """Calculate accuracy percentage."""
         if self.total_questions == 0:
             return 0.0
         return (self.correct_answers / self.total_questions) * 100
-    
+
     def record_answer(self, is_correct: bool, term: str = "") -> None:
         """
         Record a quiz answer.
-        
+
         Args:
             is_correct: Whether the answer was correct
             term: The term that was being quizzed (for tracking missed terms)
@@ -65,7 +60,7 @@ class SessionStats:
             self.incorrect_answers += 1
             if term and term not in self.missed_terms:
                 self.missed_terms.append(term)
-            
+
     def __str__(self) -> str:
         """Return formatted statistics."""
         result = (
@@ -77,7 +72,7 @@ class SessionStats:
             f"Incorrect Answers: {self.incorrect_answers}\n"
             f"Accuracy: {self.accuracy:.1f}%\n"
         )
-        
+
         if self.missed_terms:
             result += "\nTerms You Missed:\n"
             for term in self.missed_terms:
@@ -89,32 +84,32 @@ class SessionStats:
 
 class FlashcardLoader:
     """Loads and validates flashcards from JSON files."""
-    
+
     @staticmethod
     def load_from_json(filepath: str) -> List[Flashcard]:
         """
         Load flashcards from a JSON file.
-        
+
         Args:
             filepath: Path to the JSON file containing flashcards
-            
+
         Returns:
             List of Flashcard objects
-            
+
         Raises:
             FileNotFoundError: If the file doesn't exist
             ValueError: If JSON is invalid or doesn't match expected format
         """
         try:
-            with open(filepath, 'r', encoding='utf-8') as f:
+            with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except FileNotFoundError:
             raise FileNotFoundError(f"Flashcard file not found: {filepath}")
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON format: {e}")
-        
+
         return FlashcardLoader._validate_and_parse(data)
-    
+
     @staticmethod
     def _validate_and_parse(data: Any) -> List[Flashcard]:
         """
@@ -146,13 +141,9 @@ class FlashcardLoader:
             elif "flashcards" in data:
                 flashcards_data = data["flashcards"]
             else:
-                raise ValueError(
-                    "JSON object must contain 'cards' or 'flashcards' key"
-                )
+                raise ValueError("JSON object must contain 'cards' or 'flashcards' key")
         else:
-            raise ValueError(
-                "JSON root must be an array or object"
-            )
+            raise ValueError("JSON root must be an array or object")
 
         if not isinstance(flashcards_data, list):
             raise ValueError("Flashcards data must be a list")
@@ -163,9 +154,7 @@ class FlashcardLoader:
         flashcards: List[Flashcard] = []
         for idx, item in enumerate(flashcards_data):
             if not isinstance(item, dict):
-                raise ValueError(
-                    f"Flashcard at index {idx} must be an object"
-                )
+                raise ValueError(f"Flashcard at index {idx} must be an object")
 
             # Support both "front"/"back" and "term"/"definition" keys
             if "front" in item and "back" in item:

@@ -1,0 +1,24 @@
+{
+  "cards": [
+    {
+      "front": "Algorithm",
+      "back": "A step-by-step procedure for solving a problem or accomplishing a task"
+    },
+    {
+      "front": "Variable",
+      "back": "A named storage location in memory that holds a value"
+    },
+    {
+      "front": "Function",
+      "back": "A reusable block of code that performs a specific task"
+    },
+    {
+      "front": "Loop",
+      "back": "A programming construct that repeats a block of code multiple times"
+    },
+    {
+      "front": "Array",
+      "back": "A collection of elements stored at contiguous memory locations"
+    }
+  ]
+}
