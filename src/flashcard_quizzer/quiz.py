@@ -140,6 +140,21 @@ class InteractiveQuiz:
         self.input_fn = input_fn or input
         self.output_fn = output_fn or print
 
+    def _is_acronym(self, term: str) -> bool:
+        """
+        Determine if a term is likely an acronym or abbreviation.
+
+        Args:
+            term: The term to check
+
+        Returns:
+            True if the term appears to be an acronym, False otherwise
+        """
+        # Remove common punctuation that might appear in acronyms
+        cleaned = term.replace(".", "").replace("-", "").replace("_", "")
+        # Consider it an acronym if it's all uppercase and has at least 2 characters
+        return len(cleaned) >= 2 and cleaned.isupper() and cleaned.isalpha()
+
     def run(self) -> SessionStats:
         """
         Run the interactive quiz.
@@ -158,7 +173,11 @@ class InteractiveQuiz:
                 flashcard = self.engine.get_next_question()
 
                 self.output_fn(f"\nQuestion {question_num}:")
-                self.output_fn(f"What does '{flashcard.term}' stand for?")
+                # Use appropriate question format based on whether term is an acronym
+                if self._is_acronym(flashcard.term):
+                    self.output_fn(f"What does '{flashcard.term}' stand for?")
+                else:
+                    self.output_fn(f"What is '{flashcard.term}'?")
 
                 user_answer = self.input_fn("Your answer: ")
 
