@@ -88,7 +88,7 @@ class QuizEngine:
         )
         
         self.results.append(result)
-        self.stats.record_answer(is_correct)
+        self.stats.record_answer(is_correct, flashcard.term)
         
         return result
     

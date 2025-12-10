@@ -36,6 +36,12 @@ class SessionStats:
     total_questions: int = 0
     correct_answers: int = 0
     incorrect_answers: int = 0
+    missed_terms: List[str] = None
+    
+    def __post_init__(self) -> None:
+        """Initialize mutable default."""
+        if self.missed_terms is None:
+            self.missed_terms = []
     
     @property
     def accuracy(self) -> float:
@@ -44,17 +50,25 @@ class SessionStats:
             return 0.0
         return (self.correct_answers / self.total_questions) * 100
     
-    def record_answer(self, is_correct: bool) -> None:
-        """Record a quiz answer."""
+    def record_answer(self, is_correct: bool, term: str = "") -> None:
+        """
+        Record a quiz answer.
+        
+        Args:
+            is_correct: Whether the answer was correct
+            term: The term that was being quizzed (for tracking missed terms)
+        """
         self.total_questions += 1
         if is_correct:
             self.correct_answers += 1
         else:
             self.incorrect_answers += 1
+            if term and term not in self.missed_terms:
+                self.missed_terms.append(term)
             
     def __str__(self) -> str:
         """Return formatted statistics."""
-        return (
+        result = (
             f"\n{'='*50}\n"
             f"Session Statistics\n"
             f"{'='*50}\n"
@@ -62,8 +76,15 @@ class SessionStats:
             f"Correct Answers: {self.correct_answers}\n"
             f"Incorrect Answers: {self.incorrect_answers}\n"
             f"Accuracy: {self.accuracy:.1f}%\n"
-            f"{'='*50}\n"
         )
+        
+        if self.missed_terms:
+            result += f"\nTerms You Missed:\n"
+            for term in self.missed_terms:
+                result += f"  - {term}\n"
+        
+        result += f"{'='*50}\n"
+        return result
 
 
 class FlashcardLoader:

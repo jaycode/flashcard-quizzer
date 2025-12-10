@@ -120,6 +120,42 @@ class TestSessionStats:
         assert "Correct Answers: 1" in stats_str
         assert "Incorrect Answers: 1" in stats_str
         assert "Accuracy: 50.0%" in stats_str
+    
+    def test_missed_terms_tracking(self):
+        """Test tracking of missed terms."""
+        stats = SessionStats()
+        stats.record_answer(True, "DNS")
+        stats.record_answer(False, "HTTP")
+        stats.record_answer(False, "SSH")
+        stats.record_answer(True, "FTP")
+        
+        assert len(stats.missed_terms) == 2
+        assert "HTTP" in stats.missed_terms
+        assert "SSH" in stats.missed_terms
+        assert "DNS" not in stats.missed_terms
+        assert "FTP" not in stats.missed_terms
+    
+    def test_missed_terms_no_duplicates(self):
+        """Test that missed terms are not duplicated."""
+        stats = SessionStats()
+        stats.record_answer(False, "HTTP")
+        stats.record_answer(False, "HTTP")
+        stats.record_answer(False, "HTTP")
+        
+        assert len(stats.missed_terms) == 1
+        assert stats.missed_terms[0] == "HTTP"
+    
+    def test_missed_terms_in_string_output(self):
+        """Test that missed terms appear in string output."""
+        stats = SessionStats()
+        stats.record_answer(True, "DNS")
+        stats.record_answer(False, "HTTP")
+        stats.record_answer(False, "SSH")
+        
+        stats_str = str(stats)
+        assert "Terms You Missed:" in stats_str
+        assert "HTTP" in stats_str
+        assert "SSH" in stats_str
 
 
 class TestFlashcardLoader:
