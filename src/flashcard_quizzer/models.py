@@ -1,7 +1,7 @@
 """Data models for flashcard quizzer."""
 
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import List, Any
 import json
 
 
@@ -79,11 +79,11 @@ class SessionStats:
         )
         
         if self.missed_terms:
-            result += f"\nTerms You Missed:\n"
+            result += "\nTerms You Missed:\n"
             for term in self.missed_terms:
                 result += f"  - {term}\n"
-        
-        result += f"{'='*50}\n"
+
+        result += "=" * 50 + "\n"
         return result
 
 

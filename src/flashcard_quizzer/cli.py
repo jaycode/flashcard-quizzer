@@ -2,7 +2,6 @@
 
 import argparse
 import sys
-from pathlib import Path
 from typing import Optional, List
 
 from .models import FlashcardLoader
