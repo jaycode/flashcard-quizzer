@@ -1,0 +1,44 @@
+{
+  "cards": [
+    {
+      "front": "list",
+      "back": "A mutable ordered collection of items"
+    },
+    {
+      "front": "tuple",
+      "back": "An immutable ordered collection of items"
+    },
+    {
+      "front": "dict",
+      "back": "A collection of key-value pairs"
+    },
+    {
+      "front": "set",
+      "back": "An unordered collection of unique items"
+    },
+    {
+      "front": "lambda",
+      "back": "An anonymous function defined with lambda keyword"
+    },
+    {
+      "front": "def",
+      "back": "Keyword used to define a function"
+    },
+    {
+      "front": "class",
+      "back": "Keyword used to define a class"
+    },
+    {
+      "front": "self",
+      "back": "Reference to the current instance of a class"
+    },
+    {
+      "front": "import",
+      "back": "Keyword to import modules or packages"
+    },
+    {
+      "front": "try",
+      "back": "Keyword to start exception handling block"
+    }
+  ]
+}

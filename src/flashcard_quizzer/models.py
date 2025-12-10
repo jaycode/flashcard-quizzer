@@ -119,44 +119,71 @@ class FlashcardLoader:
     def _validate_and_parse(data: Any) -> List[Flashcard]:
         """
         Validate and parse JSON data into Flashcard objects.
-        
+
+        Supports three formats:
+        1. Array format: [{"front": "...", "back": "..."}]
+        2. Object with "cards": {"cards": [...]}
+        3. Object with "flashcards": {"flashcards": [...]}
+
         Args:
             data: Parsed JSON data
-            
+
         Returns:
             List of Flashcard objects
-            
+
         Raises:
             ValueError: If data structure is invalid
         """
-        if not isinstance(data, dict):
-            raise ValueError("JSON root must be an object")
-        
-        if "flashcards" not in data:
-            raise ValueError("JSON must contain 'flashcards' key")
-        
-        flashcards_data = data["flashcards"]
+        # Format 1: Array format [{"front": "...", "back": "..."}]
+        if isinstance(data, list):
+            flashcards_data = data
+        # Format 2 & 3: Object format
+        elif isinstance(data, dict):
+            # Try "cards" key first (new format)
+            if "cards" in data:
+                flashcards_data = data["cards"]
+            # Fall back to "flashcards" key (existing format)
+            elif "flashcards" in data:
+                flashcards_data = data["flashcards"]
+            else:
+                raise ValueError(
+                    "JSON object must contain 'cards' or 'flashcards' key"
+                )
+        else:
+            raise ValueError(
+                "JSON root must be an array or object"
+            )
+
         if not isinstance(flashcards_data, list):
-            raise ValueError("'flashcards' must be a list")
-        
+            raise ValueError("Flashcards data must be a list")
+
         if len(flashcards_data) == 0:
             raise ValueError("Flashcards list cannot be empty")
-        
+
         flashcards: List[Flashcard] = []
         for idx, item in enumerate(flashcards_data):
             if not isinstance(item, dict):
-                raise ValueError(f"Flashcard at index {idx} must be an object")
-            
-            if "term" not in item or "definition" not in item:
-                raise ValueError(f"Flashcard at index {idx} must have 'term' and 'definition' keys")
-            
-            try:
-                flashcard = Flashcard(
-                    term=item["term"],
-                    definition=item["definition"]
+                raise ValueError(
+                    f"Flashcard at index {idx} must be an object"
                 )
+
+            # Support both "front"/"back" and "term"/"definition" keys
+            if "front" in item and "back" in item:
+                term = item["front"]
+                definition = item["back"]
+            elif "term" in item and "definition" in item:
+                term = item["term"]
+                definition = item["definition"]
+            else:
+                raise ValueError(
+                    f"Flashcard at index {idx} must have either "
+                    "'front'/'back' or 'term'/'definition' keys"
+                )
+
+            try:
+                flashcard = Flashcard(term=term, definition=definition)
                 flashcards.append(flashcard)
             except ValueError as e:
                 raise ValueError(f"Invalid flashcard at index {idx}: {e}")
-        
+
         return flashcards
