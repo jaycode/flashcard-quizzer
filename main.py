@@ -5,7 +5,7 @@ import argparse
 from pathlib import Path
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent / 'src'))
+sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from flashcard_quizzer.models import FlashcardLoader  # noqa: E402
 from flashcard_quizzer.strategies import get_strategy  # noqa: E402
@@ -27,35 +27,35 @@ Examples:
   python main.py -f data/python_basics.json
   python main.py -f data/python_basics.json -m random
   python main.py -f data/python_basics.json -m adaptive --stats
-        """
+        """,
     )
 
     parser.add_argument(
-        '-f', '--file',
+        "-f",
+        "--file",
         required=True,
         type=str,
-        dest='file',
-        help='Path to JSON file containing flashcards'
+        dest="file",
+        help="Path to JSON file containing flashcards",
     )
 
     parser.add_argument(
-        '-m', '--mode',
+        "-m",
+        "--mode",
         type=str,
-        choices=['sequential', 'random', 'adaptive'],
-        default='sequential',
-        help='Quiz mode: sequential, random, or adaptive (default: sequential)'
+        choices=["sequential", "random", "adaptive"],
+        default="sequential",
+        help="Quiz mode: sequential, random, or adaptive (default: sequential)",
     )
 
     parser.add_argument(
-        '--stats',
-        action='store_true',
-        help='Show detailed statistics at the end'
+        "--stats", action="store_true", help="Show detailed statistics at the end"
     )
 
     return parser.parse_args()
 
 
-def print_colored(text: str, color: str = 'default'):
+def print_colored(text: str, color: str = "default"):
     """
     Print text with color.
 
@@ -64,14 +64,14 @@ def print_colored(text: str, color: str = 'default'):
         color: Color name ('green', 'red', or 'default')
     """
     colors = {
-        'green': '\033[92m',
-        'red': '\033[91m',
-        'default': '\033[0m',
-        'reset': '\033[0m'
+        "green": "\033[92m",
+        "red": "\033[91m",
+        "default": "\033[0m",
+        "reset": "\033[0m",
     }
 
-    color_code = colors.get(color, colors['default'])
-    reset_code = colors['reset']
+    color_code = colors.get(color, colors["default"])
+    reset_code = colors["reset"]
     print(f"{color_code}{text}{reset_code}")
 
 
@@ -91,10 +91,10 @@ def main():
             flashcards = FlashcardLoader.load_from_json(args.file)
             print(f"Loaded {len(flashcards)} flashcards.\n")
         except FileNotFoundError as e:
-            print_colored(f"Error: {e}", 'red')
+            print_colored(f"Error: {e}", "red")
             return 1
         except ValueError as e:
-            print_colored(f"Error: {e}", 'red')
+            print_colored(f"Error: {e}", "red")
             return 1
 
         # Get quiz strategy
@@ -107,10 +107,10 @@ def main():
         # Custom output function with colors
         def colored_output(text: str):
             """Output function that adds colors to feedback."""
-            if '✓' in text or 'Correct' in text:
-                print_colored(text, 'green')
-            elif '✗' in text or 'Incorrect' in text:
-                print_colored(text, 'red')
+            if "✓" in text or "Correct" in text:
+                print_colored(text, "green")
+            elif "✗" in text or "Incorrect" in text:
+                print_colored(text, "red")
             else:
                 print(text)
 
@@ -126,7 +126,7 @@ def main():
         def exit_aware_input(prompt):
             """Input function that handles 'exit' command."""
             user_input = original_input(prompt)
-            if user_input.lower() == 'exit':
+            if user_input.lower() == "exit":
                 raise KeyboardInterrupt()
             return user_input
 
@@ -142,10 +142,10 @@ def main():
         return 0
 
     except KeyboardInterrupt:
-        print_colored("\n\nExiting gracefully... Goodbye!", 'default')
+        print_colored("\n\nExiting gracefully... Goodbye!", "default")
         return 0
     except Exception as e:
-        print_colored(f"\nUnexpected error: {e}", 'red')
+        print_colored(f"\nUnexpected error: {e}", "red")
         return 1
 
 

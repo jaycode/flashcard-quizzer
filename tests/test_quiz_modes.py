@@ -6,7 +6,7 @@ from flashcard_quizzer.strategies import (
     get_strategy,
     SequentialStrategy,
     RandomStrategy,
-    AdaptiveStrategy
+    AdaptiveStrategy,
 )
 
 
@@ -114,8 +114,7 @@ class TestAdaptiveModeRequirement:
         # Continue quiz
         iterations = 0
         while (
-            strategy.has_more_questions(sample_flashcards, results)
-            and iterations < 30
+            strategy.has_more_questions(sample_flashcards, results) and iterations < 30
         ):
             card = strategy.get_next_flashcard(sample_flashcards, results)
 
@@ -129,9 +128,9 @@ class TestAdaptiveModeRequirement:
             iterations += 1
 
         # Both incorrect cards should have been repeated
-        assert len(repeated_terms) >= 1, (
-            "Adaptive mode should repeat at least one incorrect card"
-        )
+        assert (
+            len(repeated_terms) >= 1
+        ), "Adaptive mode should repeat at least one incorrect card"
 
     def test_adaptive_ends_when_all_correct(self, sample_flashcards):
         """Test that adaptive mode ends when all cards answered correctly."""
@@ -141,8 +140,7 @@ class TestAdaptiveModeRequirement:
         # Answer all cards correctly on first attempt
         iterations = 0
         while (
-            strategy.has_more_questions(sample_flashcards, results)
-            and iterations < 20
+            strategy.has_more_questions(sample_flashcards, results) and iterations < 20
         ):
             card = strategy.get_next_flashcard(sample_flashcards, results)
             results.append(QuizResult(card, card.definition, True))
