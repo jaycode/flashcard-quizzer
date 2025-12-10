@@ -201,19 +201,20 @@ class TestFlashcardLoader:
             Path(temp_path).unlink()
     
     def test_json_not_object(self):
-        """Test JSON that is not an object."""
+        """Test JSON that is not an object (but supports arrays now)."""
+        # Array format is now valid, so test with invalid item in array
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(["array"], f)
+            json.dump(["string instead of object"], f)
             temp_path = f.name
         
         try:
-            with pytest.raises(ValueError, match="JSON root must be an object"):
+            with pytest.raises(ValueError, match="must be an object"):
                 FlashcardLoader.load_from_json(temp_path)
         finally:
             Path(temp_path).unlink()
     
     def test_missing_flashcards_key(self):
-        """Test JSON missing 'flashcards' key."""
+        """Test JSON missing 'flashcards' or 'cards' key."""
         data = {"other_key": []}
         
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
@@ -221,7 +222,7 @@ class TestFlashcardLoader:
             temp_path = f.name
         
         try:
-            with pytest.raises(ValueError, match="must contain 'flashcards' key"):
+            with pytest.raises(ValueError, match="must contain 'cards' or 'flashcards'"):
                 FlashcardLoader.load_from_json(temp_path)
         finally:
             Path(temp_path).unlink()
@@ -235,7 +236,7 @@ class TestFlashcardLoader:
             temp_path = f.name
         
         try:
-            with pytest.raises(ValueError, match="'flashcards' must be a list"):
+            with pytest.raises(ValueError, match="data must be a list"):
                 FlashcardLoader.load_from_json(temp_path)
         finally:
             Path(temp_path).unlink()
@@ -277,7 +278,7 @@ class TestFlashcardLoader:
             temp_path = f.name
         
         try:
-            with pytest.raises(ValueError, match="must have 'term' and 'definition' keys"):
+            with pytest.raises(ValueError, match="must have either"):
                 FlashcardLoader.load_from_json(temp_path)
         finally:
             Path(temp_path).unlink()
